@@ -62,10 +62,10 @@ const getJsonXHR = (url, callback) => {
    const quote = document.querySelector(".text-gray-300.py-1")
 
    // url of the json file
-const jsonUrl = "data/quotes-data.json";
+const jsonUrl = "https://people.rit.edu/~acjvks/fall-2024/services/quote/quote-random.php";
 
   const quoteComponent = json => {
-    results.innerHTML = `${randomElement(json).content} - <b>${randomElement(json).author}</b>`
+    results.innerHTML = `${json.content} - <b>${json.author}</b>`
   }
 
 // pass in the json variable as a param
@@ -73,8 +73,8 @@ const jsonUrl = "data/quotes-data.json";
 // update the html with the author of the random quote
 // update the html with the random quote
  const cardComponent = json => {
-   heading.innerHTML = `${randomElement(json).author}`
-   quote.innerHTML = `<q><i>${randomElement(json).content}</i></q>`
+   heading.innerHTML = `${json.author}`
+   quote.innerHTML = `<q><i>${json.content}</i></q>`
     }
 
 //  randomButton.onclick = () => getJsonXHR(jsonUrl, quoteComponent)
