@@ -62,7 +62,7 @@ const getJsonXHR = (url, callback) => {
    const quote = document.querySelector(".text-gray-300.py-1")
 
    // url of the json file
-const jsonUrl = "https://people.rit.edu/ns8363/IGME-430/sarpong-app-start-2/quotes-app-start/data/quote-random.php";
+const jsonUrl = "data/quotes-data.json";
 
 //   const quoteComponent = json => {
 //     results.innerHTML = `${json.content} - <b>${json.author}</b>`
