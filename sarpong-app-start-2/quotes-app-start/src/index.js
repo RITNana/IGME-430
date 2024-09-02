@@ -41,11 +41,17 @@ const getJsonXHR = (url, callback) => {
    //   callback(json)
   }
 
+  
+
 // open the request
   xhr.open("GET", url)
 
+  xhr.setRequestHeader('Accept', 'application/json'); // Set Accept header
+
   // send the request
   xhr.send()
+
+
 }
 // MAIN
 // Note: The page is already loaded (that's what <script defer ...> does) 
@@ -62,7 +68,7 @@ const getJsonXHR = (url, callback) => {
    const quote = document.querySelector(".text-gray-300.py-1")
 
    // url of the json file
-const jsonUrl = "data/quotes-data.json";
+const jsonUrl = "https://people.rit.edu/ns8363/IGME-430/sarpong-app-start-2/quotes-app-start/data/quote-random-json-or-text.php"
 
 //   const quoteComponent = json => {
 //     results.innerHTML = `${json.content} - <b>${json.author}</b>`
