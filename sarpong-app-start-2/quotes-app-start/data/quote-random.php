@@ -1,4 +1,9 @@
 <?php
+  // 0. GET VALUE OF 'Accept' REQUEST HEADER
+  $requestHeaders = apache_request_headers();
+  $acceptHeader = $requestHeaders['Accept'];
+  //echo $acceptHeader;
+
  // I. LOAD DATA FILE
  // https://www.php.net/manual/en/function.file-get-contents.php
  $str = file_get_contents("quotes-data.json");
