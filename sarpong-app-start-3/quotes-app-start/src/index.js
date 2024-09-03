@@ -88,6 +88,25 @@ const jsonUrl = "https://people.rit.edu/ns8363/IGME-430/sarpong-app-start-2/quot
 // // when the random button is clicked, call the getJsonXHR function
 //  randomButton.onclick = () => getJsonXHR(jsonUrl, cardComponent)
 
+const getJsonFetch = async (url, callback) => {
+  let json;
+  try{
+    const response = await fetch(url,{
+      method: "GET",
+      headers:{
+        "Accept": "application/json"
+      }
+    });
+    json = await response.json()
+  }
+  catch(error){
+    console.log("ERROR: ", error)
+    json = {author: `Can't parse data file '${url}'`}
+  }
+  callback(json)
+}
+
+
 const quoteComponent = ({author, content}) => {
   results.innerHTML = `  <a class="relative bg-gray-900 block p-6 border border-gray-100 rounded-lg max-w-sm mx-auto mt-24" href="#">
       
@@ -104,7 +123,7 @@ const quoteComponent = ({author, content}) => {
     </a> `
 }
 
-randomButton.onclick = () => getJsonXHR(jsonUrl, quoteComponent)
+randomButton.onclick = () => getJsonFetch(jsonUrl, quoteComponent)
 
 
 
