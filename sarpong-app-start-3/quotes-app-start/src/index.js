@@ -45,9 +45,7 @@ const getJsonXHR = (url, callback) => {
 
 // open the request
   xhr.open("GET", url)
-
   xhr.setRequestHeader('Accept', 'application/json'); // Set Accept header
-
   // send the request
   xhr.send()
 
@@ -66,6 +64,7 @@ const getJsonXHR = (url, callback) => {
 // make references for the heading and quote from the card html
  const heading = document.querySelector('.text-white.text-2xl.font-bold.pb-2')
    const quote = document.querySelector(".text-gray-300.py-1")
+   const btnSearch = document.querySelector("#btn-search")
 
    // url of the json file
 // const jsonUrl = "https://people.rit.edu/ns8363/IGME-430/sarpong-app-start-2/quotes-app-start/data/quote-random-json-or-text.php"
@@ -123,7 +122,21 @@ const quoteComponent = ([{author, content}]) => {
     </a> `
 }
 
-randomButton.onclick = () => getJsonFetch(jsonUrl, quoteComponent)
+// don't forget to declare and initialize btnSearch
+btnSearch.onclick = (evt) => {
+  // <form>, don't submit!
+  evt.preventDefault();
+  // now grab the `.value` of #input-term
+  // now build the URL to fetch that specific quote
+  // now call `getJsonFetch()`
+  
+}
+
+randomButton.onclick = () => {
+  
+  getJsonFetch(jsonUrl, quoteComponent)
+}
+  
 
 
 
