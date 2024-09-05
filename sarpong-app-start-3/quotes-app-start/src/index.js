@@ -68,8 +68,8 @@ const getJsonXHR = (url, callback) => {
    const quote = document.querySelector(".text-gray-300.py-1")
 
    // url of the json file
-const jsonUrl = "https://people.rit.edu/ns8363/IGME-430/sarpong-app-start-2/quotes-app-start/data/quote-random-json-or-text.php"
-
+// const jsonUrl = "https://people.rit.edu/ns8363/IGME-430/sarpong-app-start-2/quotes-app-start/data/quote-random-json-or-text.php"
+   const jsonUrl = "http://localhost:3000/quotes"
 //   const quoteComponent = json => {
 //     results.innerHTML = `${json.content} - <b>${json.author}</b>`
 //   }
@@ -107,8 +107,8 @@ const getJsonFetch = async (url, callback) => {
 }
 
 
-const quoteComponent = ({author, content}) => {
-  results.innerHTML = `  <a class="relative bg-gray-900 block p-6 border border-gray-100 rounded-lg max-w-sm mx-auto mt-24" href="#">
+const quoteComponent = ([{author, content}]) => {
+  results.innerHTML = `<a class="relative bg-gray-900 block p-6 border border-gray-100 rounded-lg max-w-sm mx-auto mt-24" href="#">
       
       <span class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600"></span>
 
