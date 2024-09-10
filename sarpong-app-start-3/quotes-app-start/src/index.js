@@ -129,7 +129,7 @@ const displayRandomQuote = () => {
     </div>
   </a> `
   } else {
-    console.log("ERROR: quote not  available")
+    console.log("ERROR: quote not available")
   }
 }
 

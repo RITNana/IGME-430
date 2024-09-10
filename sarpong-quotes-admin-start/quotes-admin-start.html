@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes Admin</title>
+</head>
+
+<body>
+    <h1>Quotes Admin</h1>
+    <h2>Add a Quote (POST)</h2>
+    <!-- AI prompt - "I need an HTML form with content, author and id fields" -->
+    <!-- Nice Reference: https://www.w3schools.com/html/html_forms.asp -->
+    <form id="form-new-quote" action="http://localhost:3000/quotes" method="POST">
+        <label for="content">Quote:</label><br>
+        <textarea id="content" name="content" rows="4" required></textarea><br><br>
+
+        <label for="author">Author:</label><br>
+        <input type="text" id="author" name="author" required><br><br>
+
+        <label for="id">ID:</label><br>
+        <input id="id" name="id" required size="38" readonly><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <hr>
+
+    <h2>POST Results</h2>
+    <div id="post-results">
+        <p></p>
+        <pre></pre>
+    </div>
+
+    <hr>
+    <hr>
+
+    <h2>Delete Quote</h2>
+    <button id="btn-delete">Delete</button> | <input id="delete-id" size="38">
+
+    <h3>DELETE Results</h3>
+    <div id="delete-results">
+        <p></p>
+        <pre></pre>
+    </div>
+
+    <hr>
+    <hr>
+
+    <h2>View All Quotes</h2>
+    <div id="all-quotes"></div>
+    <script>
+        // Code goes here!
+        const newQuoteForm = document.querySelector("#form-new-quote");
+        // I. HELPERS
+        const generateNewId = () => crypto.randomUUID();
+
+        let allQuotesEndpoint = "http://localhost:3000/quotes"
+
+        // post a new quote to the server
+        const postNewQuote = async (url, payload, callback) => {
+            let json;
+            let status;
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "accept": "application/json",
+                        "content-type": "application/json"
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                json = await response.json();
+                status = `status: ${response.status} : ${response.statusText}`;
+            }
+            catch (error) {
+                console.log("ERROR: ", error)
+                json = { author: `Can't parse data file '${url}'` }
+            }
+            finally {
+                callback(json, status)
+            }
+        };
+
+        // deleting a quote from the server
+        // return status code 404 if the quote is alreadyd deleted
+        const deleteQuote = async (url, id, callback) => {
+            let json;
+            let status;
+            try {
+                const response = await fetch(`${url}/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Accept": "application/json",
+                        "content-type": "application/json"
+                    },
+
+                });
+                if (response.status === 404) {
+                    json = { error: "Quote not found" };
+                    status = `status: ${response.status} : ${response.statusText}`;
+                }
+                else {
+                    json = await response.json();
+                    status = `status: ${response.status} : ${response.statusText}`;
+                }
+            }
+            catch (error) {
+                console.log("ERROR: ", error)
+                json = { author: `Can't parse data file '${url}'` }
+            }
+            finally {
+                callback(json, status)
+            }
+        }
+
+        // fetch the data from the URL, utilizing the GET method
+        // If error in fetching data, display the error to our console
+        const getJsonFetch = async (url, callback) => {
+            let json;
+            try {
+                const response = await fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+                json = await response.json()
+            }
+            catch (error) {
+                console.log("ERROR: ", error)
+                json = { author: `Can't parse data file '${url}'` }
+            }
+            callback(json)
+        }
+
+        // callback function to update our posted quotes and call our showAllQuotes function
+        const postCallback = (json, status) => {
+            console.log("json", json);
+            console.log("status", status)
+            document.querySelector("#post-results p").innerHTML = status;
+            document.querySelector("#post-results pre").innerHTML = JSON.stringify(json);
+            showAllQuotes()
+
+        }
+
+        // call back funtion to display all the quotes added
+        const allQuotesCallback = (json, status) => {
+            console.log("json", json);
+            document.querySelector("#all-quotes").innerHTML = json.map(({ content, author, id }) => (
+                `<p><i>"${content}" </i> - ${author} - (${id})</p>`
+            )).join("")
+        }
+
+        // call back to display our deleted quote and update all of our quotes
+        const deleteCallback = (json, status) => {
+            console.log("json", json);
+            console.log("status", status)
+            document.querySelector("#delete-results p").innerHTML = status;
+            document.querySelector("#delete-results pre").innerHTML = JSON.stringify(json);
+            showAllQuotes()
+
+        }
+
+
+        // II. EVENTS
+        newQuoteForm.onsubmit = evt => {
+            evt.preventDefault()
+            const url = newQuoteForm.action;
+            const content = newQuoteForm["content"].value
+            const author = newQuoteForm["author"].value
+            const id = newQuoteForm["id"].value
+            const payload = {
+                author,
+                content,
+                id,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            }
+            postNewQuote(url, payload, postCallback);
+
+            // reset form fields
+            newQuoteForm["content"].value = "";
+            newQuoteForm["author"].value = ""
+            newQuoteForm["id"].value = generateNewId();
+        };
+
+        // III. INIT - runs once
+        newQuoteForm["id"].value = generateNewId()
+
+        // fetch the data based on the endpoint url, show all the quotes returned
+        const showAllQuotes = () => {
+            getJsonFetch(allQuotesEndpoint, allQuotesCallback)
+        }
+
+        // show all the quotes when out function first loads
+        showAllQuotes()
+
+        // when the delete button is clicked, get the value of the deletedID, and delete that quote from our list of quotes
+        document.querySelector("#btn-delete").onclick = () => {
+            let deleteId = document.querySelector("#delete-id").value
+            deleteQuote(allQuotesEndpoint, deleteId, deleteCallback)
+        }
+
+    </script>
+</body>
+
+</html>
