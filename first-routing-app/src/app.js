@@ -2,6 +2,7 @@
 const indexRouter = require('./routes/index.js');
 const quotesRouter = require('./routes/quotes.js')
 const complainRouter = require('./routes/complain.js')
+const apiRouter = require("./routes/api.js")
 
 
 const express = require('express'); // import Express in our file
@@ -21,13 +22,11 @@ app.use('/', indexRouter)
 
 app.use('/bye', indexRouter)
 
-app.use('/helloJSON', indexRouter)
-
-app.use('/timeJSON', indexRouter)
-
 app.use('/quotes', quotesRouter)
 
 app.use('/complain', complainRouter)
+
+app.use('/api', apiRouter)
 
 
 

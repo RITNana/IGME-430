@@ -7,6 +7,6 @@ router.get('/helloJSON', (req, res) => {
 })
 
 router.get('/timeJSON', (req, res) => {
-    res.status(200).json({time: new Date().toLocaleDateString()})
+    res.status(200).json({time: new Date().toString()})
 })
 module.exports = router
