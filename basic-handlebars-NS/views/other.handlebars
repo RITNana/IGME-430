@@ -1,0 +1,16 @@
+<h1>{{pageHeading}}</h1>
+<p><a href="/">home page</a></p>
+<ol>
+    {{#each colors}}
+    <li>{{this}}</li>
+    {{/each}}
+</ol>
+
+<p>Name: {{person.name}}, Age: {{person.age}}</p>
+
+
+<div>
+    {{#with person}}
+    <p>Name: {{name}}, Age: {{age}}</p>
+    {{/with}}
+</div>
